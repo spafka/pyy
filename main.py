@@ -1,26 +1,25 @@
-import os
 import asyncio
+import logging
+
+from autogen_agentchat import EVENT_LOGGER_NAME, TRACE_LOGGER_NAME
 from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.conditions import MaxMessageTermination, TextMentionTermination
 from autogen_agentchat.teams import RoundRobinGroupChat
-from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_agentchat.ui import Console
-from autogen_core.models import UserMessage, ModelFamily
 
-os.environ["OPENAI_BASE_URL"] = "https://yunwu.ai/v1"
-os.environ["OPENAI_API_KEY"] = "sk-fncuyLtxyczFo2cBHbIZkJwrifZ1BFSXxX7pXLJsKeVVprtP"
+from myclient import model_client
 
-# 定义LLM
-model_client = OpenAIChatCompletionClient(
-    model="deepseek-r1:7b",
+logging.basicConfig(level=logging.DEBUG)
 
-    model_info={
-        "function_calling": False,
-        "json_output": False,
-        "vision": False,
-        "family": ModelFamily.R1,
-    }
-)
+# For trace logging.
+trace_logger = logging.getLogger(TRACE_LOGGER_NAME)
+trace_logger.addHandler(logging.StreamHandler())
+trace_logger.setLevel(logging.DEBUG)
+
+# For structured message logging, such as low-level messages between agents.
+event_logger = logging.getLogger(EVENT_LOGGER_NAME)
+event_logger.addHandler(logging.StreamHandler())
+event_logger.setLevel(logging.DEBUG)
 
 
 async def main() -> None:
@@ -29,7 +28,7 @@ async def main() -> None:
         name="primary",
         model_client=model_client,
         system_message="你是一个乐于助人的AI智能助手。",
-        model_client_stream=True
+        model_client_stream=False
     )
 
     # 定义Agent
@@ -37,7 +36,7 @@ async def main() -> None:
         name="critic",
         model_client=model_client,
         system_message="提供建设性反馈意见。记住只有当你的反馈意见得到处理后再允许回复 “南哥AGI研习社”。",
-        model_client_stream=True
+        model_client_stream=False
 
     )
 
@@ -53,12 +52,8 @@ async def main() -> None:
                                           max_turns=None)
 
     # 1、运行team并使用官方提供的Console工具以适当的格式输出
-    stream = reflection_team.run_stream(task="写一首关于秋季的短诗")
+    stream = reflection_team.run_stream(task="写一首关于秋季的中文短诗")
     await Console(stream)
-
-    # # 2、运行team并使用流式输出,自己处理消息并将其流到前端
-    # async for message in reflection_team.run_stream(task="写一首关于秋季的短诗"):
-    #     print(message)
 
 
 if __name__ == '__main__':

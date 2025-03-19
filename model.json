@@ -1,0 +1,18 @@
+{
+  "provider": "autogen_ext.models.openai.OpenAIChatCompletionClient",
+  "component_type": "model",
+  "version": 1,
+  "component_version": 1,
+  "description": "Chat completion client for OpenAI hosted models.",
+  "label": "OpenAIChatCompletionClient",
+  "config": {
+    "model": "llama3.2",
+    "model_info": {
+      "vision": false,
+      "function_calling": true,
+      "json_output": false,
+      "family": "unknown"
+    },
+    "base_url": "http://192.168.0.100:11434/v1"
+  }
+}

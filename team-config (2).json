@@ -1,0 +1,226 @@
+{
+  "provider": "autogen_agentchat.teams.RoundRobinGroupChat",
+  "component_type": "team",
+  "version": 1,
+  "component_version": 1,
+  "description": "A single AssistantAgent (with a calculator tool) in a RoundRobinGroupChat team. ",
+  "label": "RoundRobin Team_17424",
+  "config": {
+    "participants": [
+      {
+        "provider": "autogen_agentchat.agents.AssistantAgent",
+        "component_type": "agent",
+        "version": 1,
+        "component_version": 1,
+        "description": "一个能够规划旅行的助手。",
+        "label": "planner_agent",
+        "config": {
+          "name": "planner_agent",
+          "model_client": {
+            "provider": "autogen_ext.models.openai.OpenAIChatCompletionClient",
+            "component_type": "model",
+            "version": 1,
+            "component_version": 1,
+            "description": "Local Mistral-7B model client for instruction-based generation (Ollama, LMStudio).",
+            "label": "Mistral-7B Local",
+            "config": {
+              "model": "llama3.2",
+              "model_info": {
+                "vision": false,
+                "function_calling": true,
+                "json_output": false,
+                "family": "unknown"
+              },
+              "base_url": "http://192.168.0.100:11434/v1"
+            }
+          },
+          "tools": [],
+          "handoffs": [],
+          "model_context": {
+            "provider": "autogen_core.model_context.UnboundedChatCompletionContext",
+            "component_type": "chat_completion_context",
+            "version": 1,
+            "component_version": 1,
+            "description": "An unbounded chat completion context that keeps a view of the all the messages.",
+            "label": "UnboundedChatCompletionContext",
+            "config": {}
+          },
+          "description": "An agent that provides assistance with ability to use tools.",
+          "system_message": "你是一位乐于助人的助手，能够根据用户的请求提供旅行计划建议。\n",
+          "model_client_stream": false,
+          "reflect_on_tool_use": false,
+          "tool_call_summary_format": "{result}"
+        }
+      },
+      {
+        "provider": "autogen_agentchat.agents.AssistantAgent",
+        "component_type": "agent",
+        "version": 1,
+        "component_version": 1,
+        "description": "一个能够推荐当地活动或游览地点的本地助手",
+        "label": "local_agent",
+        "config": {
+          "name": "local_agent",
+          "model_client": {
+            "provider": "autogen_ext.models.openai.OpenAIChatCompletionClient",
+            "component_type": "model",
+            "version": 1,
+            "component_version": 1,
+            "description": "Local Mistral-7B model client for instruction-based generation (Ollama, LMStudio).",
+            "label": "Mistral-7B Local",
+            "config": {
+              "model": "llama3.2",
+              "model_info": {
+                "vision": false,
+                "function_calling": true,
+                "json_output": false,
+                "family": "unknown"
+              },
+              "base_url": "http://192.168.0.100:11434/v1"
+            }
+          },
+          "tools": [],
+          "handoffs": [],
+          "model_context": {
+            "provider": "autogen_core.model_context.UnboundedChatCompletionContext",
+            "component_type": "chat_completion_context",
+            "version": 1,
+            "component_version": 1,
+            "description": "An unbounded chat completion context that keeps a view of the all the messages.",
+            "label": "UnboundedChatCompletionContext",
+            "config": {}
+          },
+          "description": "An agent that provides assistance with ability to use tools.",
+          "system_message": "你是一位乐于助人的助手，能够为用户推荐正宗且有趣的当地活动或游览地点，并且能够利用提供的任何上下文信息。",
+          "model_client_stream": false,
+          "reflect_on_tool_use": false,
+          "tool_call_summary_format": "{result}"
+        }
+      },
+      {
+        "provider": "autogen_agentchat.agents.AssistantAgent",
+        "component_type": "agent",
+        "version": 1,
+        "component_version": 1,
+        "description": "一个能够为特定目的地提供语言提示的有用助手。",
+        "label": "language_agent",
+        "config": {
+          "name": "language_agent",
+          "model_client": {
+            "provider": "autogen_ext.models.openai.OpenAIChatCompletionClient",
+            "component_type": "model",
+            "version": 1,
+            "component_version": 1,
+            "description": "Local Mistral-7B model client for instruction-based generation (Ollama, LMStudio).",
+            "label": "Mistral-7B Local",
+            "config": {
+              "model": "llama3.2",
+              "model_info": {
+                "vision": false,
+                "function_calling": true,
+                "json_output": false,
+                "family": "unknown"
+              },
+              "base_url": "http://192.168.0.100:11434/v1"
+            }
+          },
+          "tools": [],
+          "handoffs": [],
+          "model_context": {
+            "provider": "autogen_core.model_context.UnboundedChatCompletionContext",
+            "component_type": "chat_completion_context",
+            "version": 1,
+            "component_version": 1,
+            "description": "An unbounded chat completion context that keeps a view of the all the messages.",
+            "label": "UnboundedChatCompletionContext",
+            "config": {}
+          },
+          "description": "An agent that provides assistance with ability to use tools.",
+          "system_message": "你是一位乐于助人的助手，能够审查旅行计划，提供关于如何最好地应对特定目的地的语言或沟通挑战的重要/关键提示。如果计划中已经包含了语言提示，你可以附带理由表明该计划是令人满意的。\n",
+          "model_client_stream": false,
+          "reflect_on_tool_use": false,
+          "tool_call_summary_format": "{result}"
+        }
+      },
+      {
+        "provider": "autogen_agentchat.agents.AssistantAgent",
+        "component_type": "agent",
+        "version": 1,
+        "component_version": 1,
+        "description": "一个能够总结旅行计划的有用助手。",
+        "label": "travel_summary_agent",
+        "config": {
+          "name": "travel_summary_agent",
+          "model_client": {
+            "provider": "autogen_ext.models.openai.OpenAIChatCompletionClient",
+            "component_type": "model",
+            "version": 1,
+            "component_version": 1,
+            "description": "Local Mistral-7B model client for instruction-based generation (Ollama, LMStudio).",
+            "label": "Mistral-7B Local",
+            "config": {
+              "model": "llama3.2",
+              "model_info": {
+                "vision": false,
+                "function_calling": true,
+                "json_output": false,
+                "family": "unknown"
+              },
+              "base_url": "http://192.168.0.100:11434/v1"
+            }
+          },
+          "tools": [],
+          "handoffs": [],
+          "model_context": {
+            "provider": "autogen_core.model_context.UnboundedChatCompletionContext",
+            "component_type": "chat_completion_context",
+            "version": 1,
+            "component_version": 1,
+            "description": "An unbounded chat completion context that keeps a view of the all the messages.",
+            "label": "UnboundedChatCompletionContext",
+            "config": {}
+          },
+          "description": "An agent that provides assistance with ability to use tools.",
+          "system_message": "你是一位乐于助人的助手，能够接收其他助手的所有建议和意见，并提供详细的最终旅行计划。你必须确保最终计划是整合的且完整的。你的最终回复必须是完整的计划。当计划完成且所有观点都被整合后，你可以回复'TERMINATE'。\n",
+          "model_client_stream": false,
+          "reflect_on_tool_use": false,
+          "tool_call_summary_format": "{result}"
+        }
+      }
+    ],
+    "termination_condition": {
+      "provider": "autogen_agentchat.base.OrTerminationCondition",
+      "component_type": "termination",
+      "version": 1,
+      "component_version": 1,
+      "label": "OrTerminationCondition",
+      "config": {
+        "conditions": [
+          {
+            "provider": "autogen_agentchat.conditions.TextMentionTermination",
+            "component_type": "termination",
+            "version": 1,
+            "component_version": 1,
+            "description": "Terminate the conversation if a specific text is mentioned.",
+            "label": "TextMentionTermination",
+            "config": {
+              "text": "TERMINATE"
+            }
+          },
+          {
+            "provider": "autogen_agentchat.conditions.MaxMessageTermination",
+            "component_type": "termination",
+            "version": 1,
+            "component_version": 1,
+            "description": "Terminate the conversation after a maximum number of messages have been exchanged.",
+            "label": "MaxMessageTermination",
+            "config": {
+              "max_messages": 10,
+              "include_agent_event": false
+            }
+          }
+        ]
+      }
+    }
+  }
+}
